@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>技术架构方案汇总</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4f2ec;
+        --ink: #202528;
+        --muted: #667075;
+        --panel: #ffffff;
+        --line: #d6d0c4;
+        --accent: #1f6f78;
+        --accent-2: #9b4a2f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.65;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      main {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 44px 28px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 38px;
+        line-height: 1.2;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 760px;
+        margin: 0 0 30px;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 22px;
+      }
+
+      h2 {
+        margin: 0 0 10px;
+        font-size: 22px;
+      }
+
+      p {
+        margin: 0 0 16px;
+        color: var(--muted);
+      }
+
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .tag {
+        display: inline-flex;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 6px 10px;
+        color: var(--accent-2);
+        background: #fffaf6;
+        font-size: 13px;
+      }
+
+      .chain {
+        margin: 28px 0;
+        padding: 18px;
+        border-left: 4px solid var(--accent);
+        background: #eef5f4;
+        border-radius: 8px;
+      }
+
+      code {
+        background: #e8e3d8;
+        border-radius: 4px;
+        padding: 2px 5px;
+      }
+
+      @media (max-width: 760px) {
+        h1 {
+          font-size: 30px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>技术架构方案汇总</h1>
+      <p class="lead">
+        这里统一放置需求评审框架、技术架构评审框架与示例方案。当前两个框架保持独立使用。
+      </p>
+
+      <div class="chain">
+        需求评审：用户想法 -> CEO 需求分析 -> 产品总监 PRD -> 技术总监可行性与成本 -> <code>final-requirements.md</code>
+      </div>
+
+      <section class="grid">
+        <article class="card">
+          <span class="tag">需求框架</span>
+          <h2>需求评审框架</h2>
+          <p>设计 CEO、产品总监、技术总监三角色，把你的想法整理成最终需求文档。</p>
+          <div class="links">
+            <a href="./product-to-delivery-framework/index.html">入口页</a>
+            <a href="./product-to-delivery-framework/framework-design/final-framework.md">最终框架</a>
+            <a href="./product-to-delivery-framework/templates/final-requirements-template.md">需求模板</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">技术框架与示例</span>
+          <h2>消息广播技术架构方案</h2>
+          <p>包含三角色技术架构评审框架，以及“模型结果完成广播与结果查询”的最终技术架构方案。</p>
+          <div class="links">
+            <a href="./message-broadcast-architecture/index.html">入口页</a>
+            <a href="./message-broadcast-architecture/framework-design/final-framework.md">技术架构框架</a>
+            <a href="./message-broadcast-architecture/technical-architecture/final-architecture.md">架构方案</a>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
