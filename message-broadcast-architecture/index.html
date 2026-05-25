@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>模型结果消息广播与查询架构</title>
+    <link rel="stylesheet" href="./assets/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <strong>模型结果消息广播与查询架构</strong>
+          <span>技术架构方案 + 三角色评审框架</span>
+        </div>
+        <nav>
+          <a href="./technical-architecture/final-architecture.md">技术架构文档</a>
+          <a href="./framework-design/final-framework.md">框架设计文档</a>
+        </nav>
+      </header>
+
+      <div class="layout">
+        <aside class="sidebar">
+          <nav>
+            <a href="#overview">总览</a>
+            <a href="#architecture">技术架构</a>
+            <a href="#flow">核心流程</a>
+            <a href="#interfaces">接口与消息</a>
+            <a href="#risks">骨干质疑</a>
+            <a href="#framework">评审框架</a>
+            <a href="#files">文件结构</a>
+          </nav>
+        </aside>
+
+        <main class="content">
+          <section id="overview" class="section">
+            <h1>模型结果完成广播与结果查询</h1>
+            <p class="lead">
+              系统接收模型处理结果后，先持久化结果或失败信息，再通过 Transactional Outbox
+              发布 MQ 终态事件；下游收到事件后通过查询接口获取状态或结果。
+            </p>
+            <div class="pillrow">
+              <span class="pill">结果先落库</span>
+              <span class="pill">Outbox 后广播</span>
+              <span class="pill">MQ 只传元信息</span>
+              <span class="pill">查询以存储为准</span>
+              <span class="pill">至少一次 + 幂等</span>
+              <span class="pill">技术骨干已质疑补强</span>
+            </div>
+          </section>
+
+          <section id="architecture" class="section">
+            <h2>技术架构</h2>
+            <div class="flow" aria-label="总体架构流">
+              <div class="node">模型处理服务</div>
+              <div class="arrow">→</div>
+              <div class="node">结果接收服务</div>
+              <div class="arrow">→</div>
+              <div class="node">任务结果表<br />对象存储</div>
+              <div class="arrow">→</div>
+              <div class="node">Outbox</div>
+              <div class="arrow">→</div>
+              <div class="node">Publisher</div>
+              <div class="arrow">→</div>
+              <div class="node">MQ 广播</div>
+              <div class="arrow">→</div>
+              <div class="node">下游查询结果</div>
+            </div>
+            <div class="grid cols-3" style="margin-top: 16px">
+              <article class="card">
+                <h3>事实来源</h3>
+                <p>数据库和对象存储是结果事实来源，MQ 不作为结果存储。</p>
+              </article>
+              <article class="card">
+                <h3>一致性边界</h3>
+                <p>结果表和 Outbox 同事务提交，Outbox 到 MQ 最终一致。</p>
+              </article>
+              <article class="card">
+                <h3>终态事件</h3>
+                <p>成功、失败、取消、过期都应可广播，避免下游长期等待。</p>
+              </article>
+            </div>
+          </section>
+
+          <section id="flow" class="section">
+            <h2>核心流程</h2>
+            <div class="grid cols-2">
+              <article class="card">
+                <h3>成功链路</h3>
+                <ul>
+                  <li>任务服务生成 <code>taskId/resultVersion</code></li>
+                  <li>模型回调成功结果</li>
+                  <li>结果接收服务校验并持久化</li>
+                  <li>同事务写入 Outbox</li>
+                  <li>Publisher 发布 <code>MODEL_TASK_SUCCEEDED</code></li>
+                  <li>下游按 <code>taskId</code> 查询状态或结果</li>
+                </ul>
+              </article>
+              <article class="card">
+                <h3>异常补偿</h3>
+                <ul>
+                  <li>MQ 发送失败：Outbox 退避重试</li>
+                  <li>Publisher 宕机：锁超时后释放</li>
+                  <li>重复消息：下游按幂等键去重</li>
+                  <li>查询短暂失败：指数退避重试</li>
+                  <li>事件重试耗尽：进入 <code>DEAD</code> 并告警</li>
+                </ul>
+              </article>
+            </div>
+          </section>
+
+          <section id="interfaces" class="section">
+            <h2>接口与消息</h2>
+            <div class="grid cols-2">
+              <article class="card">
+                <h3>查询接口</h3>
+                <pre><code>GET /api/v1/tasks/{taskId}/status
+GET /api/v1/tasks/{taskId}/result</code></pre>
+                <p>状态查询和结果查询拆分，避免高频轮询拉取大结果。</p>
+              </article>
+              <article class="card">
+                <h3>MQ 消息</h3>
+                <pre><code>{
+  "eventId": "evt_123",
+  "eventType": "MODEL_TASK_SUCCEEDED",
+  "tenantId": "tenant_001",
+  "taskId": "task_123",
+  "resultVersion": 1,
+  "idempotencyKey": "task_123:1:MODEL_TASK_SUCCEEDED"
+}</code></pre>
+              </article>
+            </div>
+          </section>
+
+          <section id="risks" class="section">
+            <h2>技术骨干质疑后的裁决</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>争议</th>
+                    <th>裁决</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>SUCCEEDED</code> 和 <code>RESULT_AVAILABLE</code> 是否并存</td>
+                    <td>首期不并存，<code>SUCCEEDED</code> 即结果已持久化且可查询。</td>
+                  </tr>
+                  <tr>
+                    <td><code>resultVersion</code> 谁生成</td>
+                    <td>由任务服务生成，模型侧只能回传。</td>
+                  </tr>
+                  <tr>
+                    <td>消息中是否放 <code>queryUrl</code></td>
+                    <td>不放完整 URL，不放 token 或签名地址，只放资源定位字段。</td>
+                  </tr>
+                  <tr>
+                    <td>查询是否读从库</td>
+                    <td>首期结果查询读主库，后续做版本检查后回源。</td>
+                  </tr>
+                  <tr>
+                    <td>失败是否广播</td>
+                    <td>失败也是终态，必须广播失败事件。</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="framework" class="section">
+            <h2>三角色评审框架</h2>
+            <div class="grid cols-3">
+              <article class="card">
+                <h3>技术总监</h3>
+                <p>定义问题边界、约束、评价标准，并做最终裁决。</p>
+              </article>
+              <article class="card">
+                <h3>架构师</h3>
+                <p>设计整体架构、模块边界、技术选型和演进路线。</p>
+              </article>
+              <article class="card">
+                <h3>技术骨干</h3>
+                <p>补充详细设计，从工程落地角度提出具体质疑。</p>
+              </article>
+            </div>
+            <p style="margin-top: 14px">
+              完整框架结果见
+              <a href="./framework-design/final-framework.md">framework-design/final-framework.md</a>。
+            </p>
+          </section>
+
+          <section id="files" class="section">
+            <h2>文件结构</h2>
+            <pre><code>pages/message-broadcast-architecture/
+  index.html
+  assets/
+    styles.css
+  technical-architecture/
+    final-architecture.md
+  framework-design/
+    final-framework.md</code></pre>
+            <div class="notice">
+              框架设计目录只保留最终框架结果；技术架构目录保留结合技术总监、架构师和技术骨干意见后的整合版方案。
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+  </body>
+</html>
