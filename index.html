@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>技术架构方案汇总</title>
+    <title>方案输出框架汇总</title>
     <style>
       :root {
         color-scheme: light;
@@ -59,7 +59,7 @@
 
       .grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 18px;
       }
 
@@ -104,6 +104,32 @@
         border-radius: 8px;
       }
 
+      .quick {
+        margin: 0 0 24px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      .quick h2 {
+        margin-bottom: 12px;
+      }
+
+      .quick-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .quick-item {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        background: #fffaf6;
+      }
+
       code {
         background: #e8e3d8;
         border-radius: 4px;
@@ -118,40 +144,65 @@
         .grid {
           grid-template-columns: 1fr;
         }
+
+        .quick-list {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>技术架构方案汇总</h1>
+      <h1>方案输出框架汇总</h1>
       <p class="lead">
-        这里统一放置需求评审框架、技术架构评审框架与示例方案。当前两个框架保持独立使用。
+        这里统一放置产品方案输出、技术架构输出和详细设计文档输出。当前三个框架保持独立使用。
       </p>
 
       <div class="chain">
-        需求评审：用户想法 -> CEO 需求分析 -> 产品总监 PRD -> 技术总监可行性与成本 -> <code>final-requirements.md</code>
+        产品方案输出 -> 技术架构输出 -> 详细设计文档输出。当前不强制打通，可以按需要单独使用。
       </div>
+
+      <section class="quick">
+        <h2>触发词速查</h2>
+        <div class="quick-list">
+          <div class="quick-item"><code>产品方案输出：</code></div>
+          <div class="quick-item"><code>架构评审：</code> 或 <code>技术架构输出：</code></div>
+          <div class="quick-item"><code>详细设计文档输出：</code></div>
+        </div>
+        <a href="./multi-role-output-frameworks/final-framework.md">查看完整多角色框架</a>
+      </section>
 
       <section class="grid">
         <article class="card">
-          <span class="tag">需求框架</span>
-          <h2>需求评审框架</h2>
-          <p>设计 CEO、产品总监、技术总监三角色，把你的想法整理成最终需求文档。</p>
+          <span class="tag">产品</span>
+          <h2>产品方案输出</h2>
+          <p>设计 CEO、产品总监、技术总监三角色，把你的想法整理成最终产品方案。</p>
           <div class="links">
             <a href="./product-to-delivery-framework/index.html">入口页</a>
             <a href="./product-to-delivery-framework/framework-design/final-framework.md">最终框架</a>
-            <a href="./product-to-delivery-framework/templates/final-requirements-template.md">需求模板</a>
+            <a href="./product-to-delivery-framework/templates/final-product-plan-template.md">产品方案模板</a>
           </div>
         </article>
 
         <article class="card">
-          <span class="tag">技术框架与示例</span>
-          <h2>消息广播技术架构方案</h2>
-          <p>包含三角色技术架构评审框架，以及“模型结果完成广播与结果查询”的最终技术架构方案。</p>
+          <span class="tag">架构</span>
+          <h2>技术架构输出</h2>
+          <p>包含三角色技术架构输出框架，以及“模型结果完成广播与结果查询”的最终技术架构方案。</p>
           <div class="links">
             <a href="./message-broadcast-architecture/index.html">入口页</a>
-            <a href="./message-broadcast-architecture/framework-design/final-framework.md">技术架构框架</a>
+            <a href="./message-broadcast-architecture/framework-design/final-framework.md">技术架构输出框架</a>
             <a href="./message-broadcast-architecture/technical-architecture/final-architecture.md">架构方案</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag">研发</span>
+          <h2>详细设计文档输出</h2>
+          <p>设计两名资深开发和一名测试的协作流程，输出表结构、中间件、接口、测试和压测级别的详细设计。</p>
+          <div class="links">
+            <a href="./detailed-design-output-framework/index.html">入口页</a>
+            <a href="./detailed-design-output-framework/framework-design/final-framework.md">最终框架</a>
+            <a href="./detailed-design-output-framework/templates/final-detailed-design-template.md">详细设计模板</a>
           </div>
         </article>
       </section>
