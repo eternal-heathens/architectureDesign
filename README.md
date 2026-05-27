@@ -7,7 +7,7 @@
 - `index.html`：总入口页
 - `multi-role-output-frameworks/final-framework.md`：产品方案输出、技术架构输出、详细设计文档输出三类多角色框架汇总
 - `product-to-delivery-framework/`：CEO / 产品总监 / 技术总监产品方案输出框架
-- `message-broadcast-architecture/`：消息广播技术架构方案与三角色技术架构输出框架
+- `tech-architecture/`：消息广播技术架构方案与三角色技术架构输出框架
 - `detailed-design-output-framework/`：两名资深开发 / 一名测试详细设计文档输出框架
 
 ## 触发词
