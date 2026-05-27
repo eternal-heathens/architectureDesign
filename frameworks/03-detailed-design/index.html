@@ -3,18 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>产品方案输出</title>
+    <title>详细设计文档输出</title>
     <style>
       :root {
         color-scheme: light;
-        --bg: #f7f5ef;
+        --bg: #f6f7f5;
         --ink: #1f2528;
-        --muted: #5d666b;
-        --line: #d8d2c3;
+        --muted: #627075;
+        --line: #d8ded8;
         --panel: #ffffff;
-        --accent: #1f6f78;
-        --accent-2: #b34d2e;
-        --soft: #eef5f4;
+        --accent: #28666e;
+        --accent-2: #8f4b2f;
+        --soft: #edf4f1;
       }
 
       * {
@@ -65,8 +65,8 @@
 
       .topbar nav {
         display: flex;
-        gap: 14px;
         flex-wrap: wrap;
+        gap: 14px;
       }
 
       .hero {
@@ -74,7 +74,7 @@
       }
 
       h1 {
-        max-width: 860px;
+        max-width: 880px;
         margin: 0 0 14px;
         font-size: 38px;
         line-height: 1.18;
@@ -82,7 +82,7 @@
       }
 
       .lead {
-        max-width: 820px;
+        max-width: 840px;
         margin: 0;
         color: var(--muted);
         font-size: 18px;
@@ -109,11 +109,11 @@
       }
 
       .card {
-        background: var(--panel);
+        min-height: 100%;
         border: 1px solid var(--line);
         border-radius: 8px;
+        background: var(--panel);
         padding: 18px;
-        min-height: 100%;
       }
 
       .card p {
@@ -125,15 +125,14 @@
         display: grid;
         grid-template-columns: repeat(6, minmax(0, 1fr));
         gap: 10px;
-        align-items: stretch;
       }
 
       .step {
-        background: var(--soft);
-        border: 1px solid #c5d9d7;
+        min-height: 112px;
+        border: 1px solid #c8d9d2;
         border-radius: 8px;
+        background: var(--soft);
         padding: 14px;
-        min-height: 106px;
       }
 
       .step strong {
@@ -152,8 +151,8 @@
       }
 
       code {
-        background: #ece7dc;
         border-radius: 4px;
+        background: #e7ece7;
         padding: 2px 5px;
       }
 
@@ -183,20 +182,20 @@
     <main class="shell">
       <header class="topbar">
         <div class="brand">
-          <strong>产品方案输出</strong>
-          <span>CEO / 产品总监 / 技术总监</span>
+          <strong>详细设计文档输出</strong>
+          <span>两名资深开发 / 一名测试</span>
         </div>
         <nav>
-          <a href="./framework-design/final-framework.md">最终框架</a>
-          <a href="./templates/final-product-plan-template.md">产品方案模板</a>
+          <a href="./framework.md">最终框架</a>
+          <a href="./templates/final-detailed-design-template.md">详细设计模板</a>
         </nav>
       </header>
 
       <section class="hero">
-        <h1>从一个想法开始，收敛成可确认、可评审、可验收的产品方案。</h1>
+        <h1>把技术架构进一步落成可开发、可测试、可上线的详细设计文档。</h1>
         <p class="lead">
-          CEO 负责和你对话并裁决范围，产品总监负责产品化需求文档，技术总监提前核对可行性与成本；
-          当前框架只到最终产品方案为止。
+          两名资深开发分别负责数据核心设计和服务中间件设计，一名测试负责人补齐测试矩阵、压测和故障演练，
+          最终输出覆盖表、索引、Redis、MQ、接口、状态机和验收门禁。
         </p>
       </section>
 
@@ -204,29 +203,29 @@
         <h2>角色分工</h2>
         <div class="grid">
           <article class="card">
-            <h3>CEO</h3>
-            <p>主要和你对话，分析真实目标、核心场景、优先级、范围边界，并做最终需求裁决。</p>
+            <h3>资深开发 A</h3>
+            <p>负责数据模型、表结构、索引、状态机、事务、幂等和异常恢复。</p>
           </article>
           <article class="card">
-            <h3>产品总监</h3>
-            <p>把需求产品化为 PRD，明确功能清单、流程、页面交互、验收标准和版本规划。</p>
+            <h3>资深开发 B</h3>
+            <p>负责服务拆分、接口、中间件、Redis、MQ、并发、部署和可观测性。</p>
           </article>
           <article class="card">
-            <h3>技术总监</h3>
-            <p>核对产品方案是否可实现、成本是否合理、风险是否可控，并决定是否继续推进需求。</p>
+            <h3>测试负责人</h3>
+            <p>负责测试策略、用例矩阵、接口校验、故障注入、压测和验收门禁。</p>
           </article>
         </div>
       </section>
 
       <section class="section">
-        <h2>端到端流程</h2>
+        <h2>输出流程</h2>
         <div class="flow">
-          <div class="step"><strong>用户想法</strong><span>自然语言、业务问题、产品设想</span></div>
-          <div class="step"><strong>CEO</strong><span>需求访谈、目标分析、范围裁决</span></div>
-          <div class="step"><strong>产品总监</strong><span>PRD、用户故事、验收标准</span></div>
-          <div class="step"><strong>技术总监</strong><span>可行性、成本、风险评估</span></div>
-          <div class="step handoff"><strong>PRD 修订</strong><span>采纳技术反馈，收敛范围和验收标准</span></div>
-          <div class="step"><strong>CEO 确认</strong><span>形成 final-product-plan.md</span></div>
+          <div class="step"><strong>输入</strong><span>产品方案、技术架构、约束和重点问题</span></div>
+          <div class="step"><strong>开发 A</strong><span>数据、状态机、事务和核心流程</span></div>
+          <div class="step"><strong>开发 B</strong><span>服务、中间件、接口和并发设计</span></div>
+          <div class="step"><strong>测试</strong><span>测试矩阵、压测、故障演练和质疑</span></div>
+          <div class="step handoff"><strong>联合修订</strong><span>合并开发和测试意见</span></div>
+          <div class="step"><strong>定稿</strong><span>形成 final-detailed-design.md</span></div>
         </div>
       </section>
 
@@ -235,11 +234,15 @@
         <div class="grid">
           <article class="card">
             <h3>最终框架</h3>
-            <p><a href="./framework-design/final-framework.md">framework-design/final-framework.md</a></p>
+            <p><a href="./framework.md">framework.md</a></p>
           </article>
           <article class="card">
-            <h3>最终产品方案模板</h3>
-            <p><a href="./templates/final-product-plan-template.md">templates/final-product-plan-template.md</a></p>
+            <h3>详细设计模板</h3>
+            <p><a href="./templates/final-detailed-design-template.md">templates/final-detailed-design-template.md</a></p>
+          </article>
+          <article class="card">
+            <h3>核心门禁</h3>
+            <p>表、索引、Redis、MQ、接口、状态机、测试和压测都必须具体可执行。</p>
           </article>
         </div>
       </section>

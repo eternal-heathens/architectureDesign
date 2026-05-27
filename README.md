@@ -1,14 +1,26 @@
 # Architecture Design
 
-技术架构方案、产品方案输出框架与多角色协作方案汇总。
+产品方案输出、技术架构输出与详细设计文档输出三类框架汇总。
 
 ## 目录
 
 - `index.html`：总入口页
-- `multi-role-output-frameworks/final-framework.md`：产品方案输出、技术架构输出、详细设计文档输出三类多角色框架汇总
-- `product-to-delivery-framework/`：CEO / 产品总监 / 技术总监产品方案输出框架
-- `tech-architecture/`：消息广播技术架构方案与三角色技术架构输出框架
-- `detailed-design-output-framework/`：两名资深开发 / 一名测试详细设计文档输出框架
+- `docs/trigger-phrases.md`：触发词和输入模板速查
+- `docs/multi-role-framework.md`：三类多角色框架汇总
+- `frameworks/01-product-plan/`：CEO / 产品总监 / 技术总监产品方案输出框架
+- `frameworks/02-technical-architecture/`：技术总监 / 架构师 / 技术骨干技术架构输出框架
+- `frameworks/03-detailed-design/`：两名资深开发 / 一名测试详细设计文档输出框架
+
+## 统一结构
+
+每个框架目录统一包含：
+
+```text
+index.html       静态入口页
+framework.md     框架正文
+templates/       输出模板，可选
+assets/          页面资源，可选
+```
 
 ## 触发词
 
@@ -24,4 +36,4 @@
 
 ## 使用方式
 
-直接打开 `index.html` 查看静态页面，或阅读各目录下的 Markdown 文档。
+直接打开 `index.html` 查看静态页面，或阅读 `frameworks/` 和 `docs/` 下的 Markdown 文档。
