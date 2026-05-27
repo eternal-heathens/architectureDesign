@@ -5,31 +5,246 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>详细设计文档输出</title>
     <style>
-      body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f4f2ec; color: #202528; line-height: 1.65; }
-      main { max-width: 960px; margin: 0 auto; padding: 44px 28px; }
-      h1 { margin: 0 0 12px; font-size: 36px; line-height: 1.2; }
-      p { color: #667075; }
-      .panel { background: #fff; border: 1px solid #d6d0c4; border-radius: 8px; padding: 22px; margin: 20px 0; }
-      .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-      .step { border: 1px solid #d6d0c4; border-radius: 8px; padding: 14px; background: #fffaf6; }
-      a { color: #1f6f78; text-decoration: none; }
-      a:hover { text-decoration: underline; }
-      code { background: #e8e3d8; border-radius: 4px; padding: 2px 5px; }
-      @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 30px; } }
+      :root {
+        color-scheme: light;
+        --bg: #f6f7f5;
+        --ink: #1f2528;
+        --muted: #627075;
+        --line: #d8ded8;
+        --panel: #ffffff;
+        --accent: #28666e;
+        --accent-2: #8f4b2f;
+        --soft: #edf4f1;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.65;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .shell {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 28px;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: center;
+        padding: 14px 0 26px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand strong {
+        display: block;
+        font-size: 20px;
+      }
+
+      .brand span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .topbar nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .hero {
+        padding: 42px 0 26px;
+      }
+
+      h1 {
+        max-width: 880px;
+        margin: 0 0 14px;
+        font-size: 38px;
+        line-height: 1.18;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 840px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 18px;
+      }
+
+      .section {
+        margin-top: 28px;
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        font-size: 24px;
+      }
+
+      h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .card {
+        min-height: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        padding: 18px;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .step {
+        min-height: 112px;
+        border: 1px solid #c8d9d2;
+        border-radius: 8px;
+        background: var(--soft);
+        padding: 14px;
+      }
+
+      .step strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .step span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .handoff {
+        border-left: 4px solid var(--accent-2);
+        background: #fffaf6;
+      }
+
+      code {
+        border-radius: 4px;
+        background: #e7ece7;
+        padding: 2px 5px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      @media (max-width: 900px) {
+        .topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        h1 {
+          font-size: 30px;
+        }
+
+        .grid,
+        .flow {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
-    <main>
-      <h1>详细设计文档输出</h1>
-      <p>两名资深开发和一名测试协作，把产品方案与技术架构细化为可开发、可测试、可上线的详细设计文档。</p>
-      <div class="panel">
-        <p><strong>触发词：</strong><code>详细设计文档输出：</code> 或 <code>详细设计：</code></p>
-        <p><a href="./framework-design/final-framework.md">查看最终框架</a> · <a href="./templates/final-detailed-design-template.md">查看详细设计模板</a></p>
-      </div>
-      <section class="grid">
-        <div class="step"><strong>资深开发 A</strong><br />数据表、索引、状态机、事务边界、核心算法。</div>
-        <div class="step"><strong>资深开发 B</strong><br />服务拆分、中间件、接口、并发性能、部署运维。</div>
-        <div class="step"><strong>测试负责人</strong><br />测试策略、用例矩阵、压测、故障注入、验收门禁。</div>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <strong>详细设计文档输出</strong>
+          <span>两名资深开发 / 一名测试</span>
+        </div>
+        <nav>
+          <a href="./framework-design/final-framework.md">最终框架</a>
+          <a href="./templates/final-detailed-design-template.md">详细设计模板</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <h1>把技术架构进一步落成可开发、可测试、可上线的详细设计文档。</h1>
+        <p class="lead">
+          两名资深开发分别负责数据核心设计和服务中间件设计，一名测试负责人补齐测试矩阵、压测和故障演练，
+          最终输出覆盖表、索引、Redis、MQ、接口、状态机和验收门禁。
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>角色分工</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>资深开发 A</h3>
+            <p>负责数据模型、表结构、索引、状态机、事务、幂等和异常恢复。</p>
+          </article>
+          <article class="card">
+            <h3>资深开发 B</h3>
+            <p>负责服务拆分、接口、中间件、Redis、MQ、并发、部署和可观测性。</p>
+          </article>
+          <article class="card">
+            <h3>测试负责人</h3>
+            <p>负责测试策略、用例矩阵、接口校验、故障注入、压测和验收门禁。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>输出流程</h2>
+        <div class="flow">
+          <div class="step"><strong>输入</strong><span>产品方案、技术架构、约束和重点问题</span></div>
+          <div class="step"><strong>开发 A</strong><span>数据、状态机、事务和核心流程</span></div>
+          <div class="step"><strong>开发 B</strong><span>服务、中间件、接口和并发设计</span></div>
+          <div class="step"><strong>测试</strong><span>测试矩阵、压测、故障演练和质疑</span></div>
+          <div class="step handoff"><strong>联合修订</strong><span>合并开发和测试意见</span></div>
+          <div class="step"><strong>定稿</strong><span>形成 final-detailed-design.md</span></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>关键文件</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>最终框架</h3>
+            <p><a href="./framework-design/final-framework.md">framework-design/final-framework.md</a></p>
+          </article>
+          <article class="card">
+            <h3>详细设计模板</h3>
+            <p><a href="./templates/final-detailed-design-template.md">templates/final-detailed-design-template.md</a></p>
+          </article>
+          <article class="card">
+            <h3>核心门禁</h3>
+            <p>表、索引、Redis、MQ、接口、状态机、测试和压测都必须具体可执行。</p>
+          </article>
+        </div>
       </section>
     </main>
   </body>
